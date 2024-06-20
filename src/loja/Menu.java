@@ -1,6 +1,7 @@
 package loja;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -27,30 +28,35 @@ public class Menu {
         while (true) {
             exibirMenu();
 
-            int opcao = leia.nextInt();
-            switch (opcao) {
-                case 1:
-                    listarProdutos();
-                    break;
-                case 2:
-                    adicionarAoCarrinho(leia);
-                    break;
-                case 3:
-                    verProdutosAdicionados();
-                    break;
-                case 4:
-                    removerItemDoCarrinho(leia);
-                    break;
-                case 5:
-                    finalizarCompra();
-                    break;
-                case 6:
-                    System.out.println("\nPrograma encerrado!");
-                    System.exit(0);
-                    break;
-                default:
-                    System.out.println("\nOpção inválida!!");
-                    break;
+            try {
+                int opcao = leia.nextInt();
+                switch (opcao) {
+                    case 1:
+                        listarProdutos();
+                        break;
+                    case 2:
+                        adicionarAoCarrinho(leia);
+                        break;
+                    case 3:
+                        verProdutosAdicionados();
+                        break;
+                    case 4:
+                        removerItemDoCarrinho(leia);
+                        break;
+                    case 5:
+                        finalizarCompra();
+                        break;
+                    case 6:
+                        System.out.println("\nPrograma encerrado!");
+                        System.exit(0);
+                        break;
+                    default:
+                        System.out.println("\nOpção inválida!!");
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("\nErro: Opção inválida. Digite um número válido.");
+                leia.nextLine(); // Limpar o buffer do scanner
             }
         }
     }
@@ -82,12 +88,17 @@ public class Menu {
     private static void adicionarAoCarrinho(Scanner leia) {
         listarProdutos();
         System.out.print("\nEscolha o número do produto que deseja adicionar ao carrinho: ");
-        int escolha = leia.nextInt();
-        if (escolha > 0 && escolha <= listaProdutos.size()) {
-            carrinho.add(listaProdutos.get(escolha - 1));
-            System.out.println("Produto adicionado ao carrinho!");
-        } else {
-            System.out.println("Opção inválida!");
+        try {
+            int escolha = leia.nextInt();
+            if (escolha > 0 && escolha <= listaProdutos.size()) {
+                carrinho.add(listaProdutos.get(escolha - 1));
+                System.out.println("Produto adicionado ao carrinho!");
+            } else {
+                System.out.println("Opção inválida!");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("\nErro: Opção inválida. Digite um número válido.");
+            leia.nextLine();
         }
     }
 
@@ -103,12 +114,17 @@ public class Menu {
     private static void removerItemDoCarrinho(Scanner leia) {
         verProdutosAdicionados();
         System.out.print("\nEscolha o número do produto que deseja remover do carrinho: ");
-        int escolha = leia.nextInt();
-        if (escolha > 0 && escolha <= carrinho.size()) {
-            carrinho.remove(escolha - 1);
-            System.out.println("Produto removido do carrinho!");
-        } else {
-            System.out.println("Opção inválida!");
+        try {
+            int escolha = leia.nextInt();
+            if (escolha > 0 && escolha <= carrinho.size()) {
+                carrinho.remove(escolha - 1);
+                System.out.println("Produto removido do carrinho!");
+            } else {
+                System.out.println("Opção inválida!");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("\nErro: Opção inválida. Digite um número válido.");
+            leia.nextLine();
         }
     }
 
